@@ -64,3 +64,7 @@ def test_delete_currency(pay_grades_page, edit_pay_grades):
     assert edit_pay_grades.find_currency('Euro')
     edit_pay_grades.delete_currency('Euro')
     assert edit_pay_grades.find_currency('Euro') is None
+
+
+def test_edit_currency():
+    pass
