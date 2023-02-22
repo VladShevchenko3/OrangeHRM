@@ -60,5 +60,5 @@ def add_employee_page(driver):
 
 
 @pytest.fixture(scope="function")
-def employee_information_page(driver):
+def employee_info_page(driver):
     return EmployeeInformationPage(driver)
