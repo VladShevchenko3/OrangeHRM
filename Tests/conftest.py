@@ -3,13 +3,12 @@ import os
 import pytest
 from selenium import webdriver
 
-from Pages.AddJobTitlePage import AddJobPage
-from Pages.EditPayGradesPage import EditPayGrades
+from Pages.sectionPIMPages.AddEmployeePage import AddEmployeePage
 from Pages.BasePage import BasePage
-from Pages.HomePage import HomePage
-from Pages.JobTitlePage import JobTitle
+from Pages.sectionPIMPages.EmployeeInformationPage import EmployeeInformationPage
+from Pages.DashboardPage import DashboardPage
 from Pages.LoginPage import LoginPage
-from Pages.PayGradesPage import PayGrades
+from Pages.sectionPIMPages.PIMPage import PIMPage
 
 
 @pytest.fixture(scope="function")
@@ -17,6 +16,7 @@ def driver():
     dir_project_path = os.getcwd()
     driver_path = os.path.join(dir_project_path, 'chromedriver.exe')
     driver = webdriver.Chrome(driver_path)
+    driver.maximize_window()
     yield driver
     driver.quit()
 
@@ -33,30 +33,32 @@ def login_page(driver):
 
 @pytest.fixture(scope='function')
 def authorise(login_page):
-    login_page.go_to_site()
-    login_page.authorization('Admin', 'admin123')
+    login_page.action_open_page()
+    login_page.action_edit_text_username("Admin")
+    login_page.action_edit_text_password("admin123")
+    login_page.action_click_on_the_login_btn()
 
 
 @pytest.fixture(scope="function")
-def home_page(authorise, driver):
-    return HomePage(driver)
+def home_page_with_authorise(authorise, driver):
+    return DashboardPage(driver)
 
 
 @pytest.fixture(scope="function")
-def job_title_page(authorise, driver):
-    return JobTitle(driver)
+def home_page(driver):
+    return DashboardPage(driver)
 
 
 @pytest.fixture(scope="function")
-def add_job_page(driver):
-    return AddJobPage(driver)
+def pim_page(driver):
+    return PIMPage(driver)
 
 
 @pytest.fixture(scope="function")
-def pay_grades_page(home_page, driver):
-    return PayGrades(driver)
+def add_employee_page(driver):
+    return AddEmployeePage(driver)
 
 
 @pytest.fixture(scope="function")
-def edit_pay_grades(driver):
-    return EditPayGrades(driver)
+def employee_information_page(driver):
+    return EmployeeInformationPage(driver)

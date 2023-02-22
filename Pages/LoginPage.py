@@ -3,31 +3,40 @@ from selenium.webdriver.common.by import By
 
 
 class LoginPageLocators:
-    HEAD_PAGE = (By.XPATH, "//h1[contains(text(), '{}')]")
-    USERNAME_FIELD_INPUT = (By.CSS_SELECTOR, '#txtUsername')
-    PASSWORD_FIELD_INPUT = (By.CSS_SELECTOR, '#txtPassword')
-    LOGIN_BTN = (By.CSS_SELECTOR, '#btnLogin')
-    SMS_ERROR = (By.CSS_SELECTOR, '#spanMessage')
+    USERNAME = (By.XPATH, '//input[@name="username"]')
+    PASSWORD = (By.XPATH, '//input[@name="password"]')
+    LOGIN_BTN = (By.XPATH, '//button[@class="oxd-button oxd-button--medium oxd-button--main orangehrm-login-button"]')
+    ALERT_ERROR = (By.XPATH, '//p[@class="oxd-text oxd-text--p oxd-alert-content-text"]')
+
 
 class LoginPage:
 
     def __init__(self, driver):
         self.base_page = BasePage(driver)
 
-    def authorization(self, username, password):
-        self.base_page.enter_text(LoginPageLocators.USERNAME_FIELD_INPUT, username)
-        self.base_page.enter_text(LoginPageLocators.PASSWORD_FIELD_INPUT, password)
-        self.base_page.find_element(LoginPageLocators.LOGIN_BTN).click()
+    def action_edit_text_username(self, text_username):
+        username = self.base_page.action_find_element(LoginPageLocators.USERNAME)
+        username.clear()
+        username.send_keys(text_username)
 
-    def go_to_site(self):
-        return self.base_page.go_to_site()
+    def action_edit_text_password(self, text_password):
+        password = self.base_page.action_find_element(LoginPageLocators.PASSWORD)
+        password.clear()
+        password.send_keys(text_password)
 
-    def get_url(self):
-        return self.base_page.get_url()
+    def action_click_on_the_login_btn(self):
+        self.base_page.action_find_element(LoginPageLocators.LOGIN_BTN).click()
 
-    def find_head(self, head):
-        return self.base_page.find_head(LoginPageLocators.HEAD_PAGE, head)
+    def action_open_page(self):
+        return self.base_page.action_open_page()
 
-    def find_sms_error(self):
-        return self.base_page.find_element(LoginPageLocators.SMS_ERROR)
+    def action_get_url(self):
+        return self.base_page.action_get_current_url()
 
+    def assert_alert_error_is_displayed(self):
+        alert_error = self.base_page.action_find_element(LoginPageLocators.ALERT_ERROR)
+        assert alert_error.is_displayed() is True, "Alert error is not displayed"
+
+    def assert_alert_error_has_text(self, text):
+        alert_error = self.base_page.action_find_element(LoginPageLocators.ALERT_ERROR)
+        assert alert_error.text == text
