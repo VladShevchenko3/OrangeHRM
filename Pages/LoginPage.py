@@ -1,42 +1,25 @@
-from Pages.BasePage import BasePage
-from selenium.webdriver.common.by import By
+from Pages.LoginPageLocators import LoginPageLocators
+from Pages.SeleniumAgent import SeleniumAgent
 
 
-class LoginPageLocators:
-    USERNAME = (By.XPATH, '//input[@name="username"]')
-    PASSWORD = (By.XPATH, '//input[@name="password"]')
-    LOGIN_BTN = (By.XPATH, '//button[@class="oxd-button oxd-button--medium oxd-button--main orangehrm-login-button"]')
-    ALERT_ERROR = (By.XPATH, '//p[@class="oxd-text oxd-text--p oxd-alert-content-text"]')
-
-
-class LoginPage:
-
+class LoginPage(SeleniumAgent):
     def __init__(self, driver):
-        self.base_page = BasePage(driver)
+        super().__init__(driver)
+        self.__actions = SeleniumAgent(driver)
+        self.__locators = LoginPageLocators(driver)
 
-    def action_edit_text_username(self, text_username):
-        username = self.base_page.action_find_element(LoginPageLocators.USERNAME)
-        username.clear()
-        username.send_keys(text_username)
+    def open_page(self):
+        return self.__actions._open_base_page()
 
-    def action_edit_text_password(self, text_password):
-        password = self.base_page.action_find_element(LoginPageLocators.PASSWORD)
-        password.clear()
-        password.send_keys(text_password)
+    def input_username(self, text):
+        self.__actions._input_text(self.__locators.LOCATOR_USERNAME_INPUT, text)
 
-    def action_click_on_the_login_btn(self):
-        self.base_page.action_find_element(LoginPageLocators.LOGIN_BTN).click()
+    def input_password(self, text):
+        self.__actions._input_text(self.__locators.LOCATOR_PASSWORD_INPUT, text)
 
-    def action_open_page(self):
-        return self.base_page.action_open_page()
+    def click_login_button(self):
+        self.__actions._find_element_click(self.__locators.LOCATOR_LOGIN_BUTTON)
 
-    def action_get_url(self):
-        return self.base_page.action_get_current_url()
-
-    def assert_alert_error_is_displayed(self):
-        alert_error = self.base_page.action_find_element(LoginPageLocators.ALERT_ERROR)
-        assert alert_error.is_displayed() is True, "Alert error is not displayed"
-
-    def assert_alert_error_has_text(self, text):
-        alert_error = self.base_page.action_find_element(LoginPageLocators.ALERT_ERROR)
-        assert alert_error.text == text
+    def check_alert_error_is_displayed(self, text):
+        locator = self.__actions._format_locator(self.__locators.LOCATOR_ALERT_ERROR, text)
+        self.__actions._check_element_is_displayed(locator)

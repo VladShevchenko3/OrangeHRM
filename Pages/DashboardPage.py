@@ -1,16 +1,15 @@
-from Pages.BasePage import BasePage
+from Pages.DashboardPageLocators import DashboardPageLocators
 from Pages.MainMenu import MainMenu
+from Pages.SeleniumAgent import SeleniumAgent
 
 
-class DashboardPage:
+class DashboardPage(SeleniumAgent):
 
     def __init__(self, driver):
-        self.base_page = BasePage(driver)
-        self.main_menu = MainMenu(driver)
-        self.url_page = 'https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index'
+        super().__init__(driver)
+        self.__main_menu = MainMenu(driver)
+        self.__actions = SeleniumAgent(driver)
+        self.__locators = DashboardPageLocators(driver)
 
-    def action_open_PIM_page(self):
-        self.main_menu.action_click_on_PIM_btn()
-
-    def assert_check_equality_current_and_base_urls(self):
-        assert self.base_page.action_get_current_url() == self.url_page
+    def open_PIM_page(self):
+        self.__main_menu.click_on_PIM_button()

@@ -1,43 +1,28 @@
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
-from Pages.BasePage import BasePage
+from Pages.SeleniumAgent import SeleniumAgent
+from Pages.sectionPIMPages.AddEmployeeLocators import AddEmployeePageLocators
 
 
-class AddEmployeeLocators:
-    FIRST_NAME = (By.XPATH, '//input[@name="firstName"]')
-    MIDDLE_NAME = (By.XPATH, '//input[@name="middleName"]')
-    LAST_NAME = (By.XPATH, '//input[@name="lastName"]')
-    ID = (By.XPATH, '//div[@class=""]//input[@class="oxd-input oxd-input--active"]')
-    SAVE_BTN = (By.XPATH, '//button[@class="oxd-button oxd-button--medium oxd-button--secondary orangehrm-left-space"]')
-
-
-class AddEmployeePage:
+class AddEmployeePage(SeleniumAgent):
 
     def __init__(self, driver):
-        self.base_page = BasePage(driver)
-        self.url_page = 'https://opensource-demo.orangehrmlive.com/web/index.php/pim/addEmployee'
+        super().__init__(driver)
+        self.__actions = SeleniumAgent(driver)
+        self.__locators = AddEmployeePageLocators(driver)
 
-    def action_edit_firstName(self, firstName_text):
-        firstName = self.base_page.action_find_element(AddEmployeeLocators.FIRST_NAME)
-        firstName.clear()
-        firstName.send_keys(firstName_text)
+    def input_firstName(self, firstName):
+        self.__actions._input_text(self.__locators.LOCATOR_FIRST_NAME_INPUT, firstName)
 
-    def action_edit_middleName(self, firstName_text):
-        middleName = self.base_page.action_find_element(AddEmployeeLocators.MIDDLE_NAME)
-        middleName.clear()
-        middleName.send_keys(firstName_text)
+    def input_middleName(self, middleName):
+        self.__actions._input_text(self.__locators.LOCATOR_MIDDLE_NAME_INPUT, middleName)
 
-    def action_edit_lastName(self, firstName_text):
-        lastName = self.base_page.action_find_element(AddEmployeeLocators.LAST_NAME)
-        lastName.clear()
-        lastName.send_keys(firstName_text)
+    def input_lastName(self, lastName):
+        self.__actions._input_text(self.__locators.LOCATOR_LAST_NAME_INPUT, lastName)
 
-    def action_edit_id(self, id):
-        employee_id = self.base_page.action_find_element(AddEmployeeLocators.ID)
-        employee_id.send_keys(Keys.CONTROL + "a")
-        employee_id.send_keys(Keys.DELETE)
-        employee_id.send_keys(id)
+    def input_id(self, id):
+        self.__actions._input_text_with_manual_data_cleaning(self.__locators.LOCATOR_ID_INPUT, id)
 
-    def action_click_on_save_btn(self):
-        self.base_page.action_find_element(AddEmployeeLocators.SAVE_BTN).click()
+    def click_save_button(self):
+        self.__actions._find_element_click(self.__locators.LOCATOR_SAVE_BUTTON)

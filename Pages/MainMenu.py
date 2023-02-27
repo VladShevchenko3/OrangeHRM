@@ -1,19 +1,15 @@
-from selenium.webdriver.common.by import By
-
-from Pages.BasePage import BasePage
-
-
-class MainManuLocators:
-    PIM_BTN = (By.XPATH, '//ul[@class="oxd-main-menu"]//span[text()="PIM"]')
-    DASHBOARD_BTN = (By.XPATH, '//ul[@class="oxd-main-menu"]//span[text()="Dashboard"]')
+from Pages.MainMenuLocators import MainMenuLocators
+from Pages.SeleniumAgent import SeleniumAgent
 
 
-class MainMenu:
+class MainMenu(SeleniumAgent):
     def __init__(self, driver):
-        self.base_page = BasePage(driver)
+        super().__init__(driver)
+        self.__actions = SeleniumAgent(driver)
+        self.__locators = MainMenuLocators(driver)
 
-    def action_click_on_PIM_btn(self):
-        self.base_page.action_find_element(MainManuLocators.PIM_BTN).click()
+    def click_on_PIM_button(self):
+        self.__actions._find_element_click(self.__locators.LOCATOR_PIM_BUTTON)
 
-    def action_click_on_Dashboard_btn(self):
-        self.base_page.action_find_element(MainManuLocators.DASHBOARD_BTN).click()
+    def click_on_Dashboard_btn(self):
+        self.__actions._find_element_click(self.__locators.LOCATOR_DASHBOARD_BUTTON)

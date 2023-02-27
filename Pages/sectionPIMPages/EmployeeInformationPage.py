@@ -1,12 +1,12 @@
-from Pages.BasePage import BasePage
-from Pages.sectionPIMPages.NavigateMenuPIM import NavigateMenuPIM
+from Pages.SeleniumAgent import SeleniumAgent
+from Pages.sectionPIMPages.NavigateMenuLocators import NavigateMenuLocators
 
 
-class EmployeeInformationPage:
+class EmployeeInformationPage(SeleniumAgent):
     def __init__(self, driver):
-        self.base_page = BasePage(driver)
-        self.navigate_menu = NavigateMenuPIM(driver)
-        self.url_page = 'https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewEmployeeList'
+        super().__init__(driver)
+        self.__actions = SeleniumAgent(driver)
+        self.__locator_nav_menu = NavigateMenuLocators(driver)
 
-    def action_click_on_employee_list(self):
-        self.navigate_menu.action_click_on_employee_list()
+    def click_employee_list(self):
+        self.__actions._find_element_click(self.__locator_nav_menu.LOCATOR_EMPLOYEE_LIST)
