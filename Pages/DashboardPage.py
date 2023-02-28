@@ -13,3 +13,6 @@ class DashboardPage(SeleniumAgent):
 
     def open_PIM_page(self):
         self.__main_menu.click_on_PIM_button()
+
+    def check_the_head_is_displayed(self):
+        return self.__actions._check_element_is_displayed(self.__locators.LOCATOR_HEAD)

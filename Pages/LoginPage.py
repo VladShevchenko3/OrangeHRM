@@ -22,4 +22,4 @@ class LoginPage(SeleniumAgent):
 
     def check_alert_error_is_displayed(self, text):
         locator = self.__actions._format_locator(self.__locators.LOCATOR_ALERT_ERROR, text)
-        self.__actions._check_element_is_displayed(locator)
+        return self.__actions._check_element_is_displayed(locator)

@@ -39,7 +39,7 @@ def dashboard_page_with_authorise(authorise, driver):
 
 
 @pytest.fixture(scope="function")
-def home_page(driver):
+def dashboard_page(driver):
     return DashboardPage(driver)
 
 

@@ -31,9 +31,9 @@ class PIMPage(SeleniumAgent):
 
     def check_employee_is_displayed(self, position, lastName):
         locator = self.__actions._format_locator(self.__locators.LOCATOR_EMPLOYEE_LASTNAME, lastName)
-        assert self.__actions._check_element_in_list_with_position_is_displayed(self.__locators.LOCATOR_EMPLOYEES_LIST,
+        return self.__actions._check_element_in_list_with_position_is_displayed(self.__locators.LOCATOR_EMPLOYEES_LIST,
                                                                                 position, locator)
 
     def check_employee_is_not_find(self):
         employee_list = self.__actions._get_list(self.__locators.LOCATOR_EMPLOYEES_LIST)
-        assert len(employee_list) == 1 and employee_list[0].text == ''
+        return len(employee_list) == 1 and employee_list[0].text == ''
